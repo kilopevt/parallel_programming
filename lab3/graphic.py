@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 result_dir = "result"
 
 # Регулярное выражение для извлечения числа процессов и размера из имени файла
-# Поддерживаются оба варианта: result_C2_400.csv и results_C2_400.csv
 pattern = re.compile(r"results?[_-]C(\d+)[_-](\d+)\.csv", re.IGNORECASE)
 
 # Словарь для хранения списков времени: ключ = (процессы, размер)
@@ -22,14 +21,11 @@ for filename in os.listdir(result_dir):
     size = int(match.group(2))
     filepath = os.path.join(result_dir, filename)
 
-    # Чтение CSV-файла с заголовком
+    # Чтение CSV-файла
     df_file = pd.read_csv(filepath)
-    # Предполагаем, что столбец со временем называется 'time_ms'
-    # Если название другое, можно автоматически найти числовой столбец
     if 'time_ms' in df_file.columns:
         times = df_file['time_ms'].tolist()
     else:
-        # Если столбец называется иначе, берём первый числовой столбец
         numeric_cols = df_file.select_dtypes(include='number').columns
         if len(numeric_cols) > 0:
             times = df_file[numeric_cols[0]].tolist()
@@ -97,8 +93,3 @@ if 1 in pivot_time.columns:
     print(speedup.round(2))
 else:
     print("\nWarning: no data for 1 process, speedup not calculated.")
-
-# Дополнительно выведем количество замеров для каждой комбинации
-pivot_count = df.pivot(index="size", columns="processes", values="count")
-print("\n=== Number of measurements per combination ===")
-print(pivot_count)
