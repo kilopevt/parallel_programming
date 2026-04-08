@@ -24,7 +24,7 @@
 2. **Выполнение замеров**  
    Для каждого размера и каждого количества процессов N (1, 2, 4) запустите:
    ```bash
-   mpiexec -n <N> ./matrix_mpi matrices/A_<size>.csv matrices/B_<size>.csv result/result_C<N>_<size>.csv
+   mpiexec -n <N> ./main matrices/A_<size>.csv matrices/B_<size>.csv result/result_C<N>_<size>.csv
    ```
    Например, для размера 800 и 4 процессов:
    ```bash
